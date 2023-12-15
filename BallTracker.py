@@ -2,12 +2,14 @@
 import cv2 as cv
 import numpy as np
 
+
+
 # Create video element
 video = cv.VideoCapture(0)
 
 #assign upper and lower values from ColorThresholdTesting
-ColorLower = (12 ,70 ,49)
-ColorUpper = (27, 255, 255)
+ColorLower = ( 0, 89, 144)
+ColorUpper = (28, 212, 255)
 
 #Capture frame from webcam, perfom processing and display results
 while(True):
@@ -21,15 +23,15 @@ while(True):
     mask = cv.inRange(hsv, ColorLower, ColorUpper)
     # Erode small contours
     mask = cv.erode(mask, None, iterations=5)
-    # Dilate, idk what this does tbh
+    # Dilates remaing contours
     mask = cv.dilate(mask, None, iterations=5)
 
     # Find contours on the mask
     cnts, _ = cv.findContours(mask.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
     #This is just for debugging
-    print("Number of Contours found = " + str(len(cnts))) 
-
+    # print("Number of Contours found = " + str(len(cnts))) 
+    
     #See if contours are in frame
     try:
         #Iterate through countour and find center (average value)
@@ -37,13 +39,16 @@ while(True):
             M = cv.moments(c)
             cX= int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
+
             
-            
+        # print(cX, " ",cY)
         # create a blank image to draw contours on
         contour_img = np.zeros_like(frame)
 
         # draw contours on the blank image
         cv.drawContours(contour_img, cnts, -1, (0, 255, 0), 3)
+
+        print(frame[cX,cY])
 
         # add the contours to the original frame
         result = cv.add(frame, contour_img)

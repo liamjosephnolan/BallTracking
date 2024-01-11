@@ -1,1 +1,2 @@
-cv2.HoughCircles
+
+    # Find contours on the mask

@@ -1,20 +1,21 @@
-#import libs
 import cv2 as cv
 import numpy as np
+import time
 
 
 
 # Create video element
-video = cv.VideoCapture(0)
+cap = cv.VideoCapture('RedBall.mp4')
+
 
 #assign upper and lower values from ColorThresholdTesting
-ColorLower = ( 0, 89, 144)
-ColorUpper = (28, 212, 255)
-
+ColorLower = (0, 139, 0)
+ColorUpper = (180, 255, 255)
+c_data = []
 #Capture frame from webcam, perfom processing and display results
 while(True):
     #Get webcam frame
-    ret, frame = video.read()
+    ret, frame = cap.read()
 
     # convert frame to HSV
     hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
@@ -27,28 +28,28 @@ while(True):
     mask = cv.dilate(mask, None, iterations=5)
 
     # Find contours on the mask
-    cnts, _ = cv.findContours(mask.copy(), cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
+    cnts, _ = cv.findContours(mask, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE)
 
     #This is just for debugging
     # print("Number of Contours found = " + str(len(cnts))) 
-    
     #See if contours are in frame
     try:
         #Iterate through countour and find center (average value)
+        
         for c in cnts:
             M = cv.moments(c)
             cX= int(M["m10"] / M["m00"])
             cY = int(M["m01"] / M["m00"])
-
-            
-        # print(cX, " ",cY)
+            # current_time = time.strftime()
+            data = (cX, cY)
+            print(data)
+ 
         # create a blank image to draw contours on
         contour_img = np.zeros_like(frame)
 
         # draw contours on the blank image
         cv.drawContours(contour_img, cnts, -1, (0, 255, 0), 3)
 
-        print(frame[cX,cY])
 
         # add the contours to the original frame
         result = cv.add(frame, contour_img)
@@ -58,11 +59,12 @@ while(True):
         cv.putText(contour_img, "center", (cX - 20, cY - 20),
         cv.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
 
+
     # No contour found case
     except:
-        pass
+        pass # sad :(
 
-    
+
     # Show original image
     # cv.imshow('frame', result)
 
@@ -71,12 +73,16 @@ while(True):
     # Disp contours
     cv.imshow('Conts', contour_img)
 
+    # Show Image
+    #cv.imshow('frame', result)
 
+    
     # break loop with q key press
     if cv.waitKey(1) & 0xFF == ord('q'):
         break
 
 # After the loop release the cap object
-video.release()
+cap.release()
 # Destroy all the windows
 cv.destroyAllWindows()
+

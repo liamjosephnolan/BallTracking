@@ -1,2 +1,1 @@
-
-    # Find contours on the mask
+e

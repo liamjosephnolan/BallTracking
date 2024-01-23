@@ -1,3 +1,6 @@
+# Credit: https://docs.opencv.org/3.4/da/d97/tutorial_threshold_inRange.html
+# Most of the code for this was taken from the above soruce. The software was modified to suit our needs
+
 from __future__ import print_function
 import cv2 as cv
 import argparse

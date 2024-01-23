@@ -1,3 +1,5 @@
+# This script was used to generate images for our presentation
+
 import numpy as np
 import cv2
 

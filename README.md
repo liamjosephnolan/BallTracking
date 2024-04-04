@@ -6,5 +6,5 @@ Iterating through the video frame by frame, the difference in center point posit
 
 It was found that the prediction algorithm was relatively accurate, and future iterations of the project could include object depth detection for non-planar motion.
 
-**Main file for ball tracking is Balltracker.py**
+The main file for ball tracking is Balltracker.py and addtional details and documentation can be found in the Report file
 
